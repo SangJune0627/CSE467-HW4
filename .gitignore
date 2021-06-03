@@ -1,0 +1,6 @@
+seeds/
+*.pdf
+*.zip
+*.o
+*.png
+crash*
