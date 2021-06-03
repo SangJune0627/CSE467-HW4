@@ -2,5 +2,7 @@ seeds/
 *.pdf
 *.zip
 *.o
+*.a
 *.png
+fuzzer*
 crash*
