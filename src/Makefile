@@ -1,7 +1,7 @@
 CC = clang
 override CFLAGS += -g -w -O3 -fsanitize=fuzzer,address
 
-all: libpngparser fuzzer_load_png fuzzer_load_png_name fuzzer_store_png_name fuzzer_store_png_rgba
+all: libpngparser fuzzer_load_png fuzzer_load_png_name fuzzer_store_png_name fuzzer_store_png_palette fuzzer_store_png_rgba
 
 clean:
 	rm -f libpngparser.a fuzzer_load_png fuzzer_load_png_name fuzzer_store_png_rgba fuzzer_store_png_palette fuzzer_store_png_name *.o

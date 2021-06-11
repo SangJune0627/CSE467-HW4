@@ -300,8 +300,6 @@ int read_png_chunk(FILE *file, struct png_chunk *chunk)
   return 0;
 
 error:
-  if (chunk->chunk_data)
-    free(chunk->chunk_data);
   return 1;
 }
 
@@ -636,7 +634,6 @@ int load_png(const char *filename, struct image **img)
   for (; !read_png_chunk(input, current_chunk);
        current_chunk = malloc(sizeof(struct png_chunk)))
   {
-    current_chunk->chunk_data = NULL;
 
     chunk_idx++;
     // We have more chunks after IEND for some reason
@@ -955,6 +952,7 @@ int compress_png_data(uint8_t *decompressed_data, uint32_t decompressed_length,
   }
 
   /* clean up and return */
+
   (void)deflateEnd(&strm);
   return 0;
 
@@ -1005,6 +1003,11 @@ int store_idat_rgb_alpha(FILE *output, struct image *img)
 
   png_chunk_idat idat = fill_idat_chunk(compressed_data_buf, compressed_length);
   store_png_chunk(output, (struct png_chunk *)&idat);
+  if (compressed_data_buf)
+  {
+    free(compressed_data_buf);
+  }
+  free(non_compressed_buf);
   return 0;
 }
 
@@ -1056,6 +1059,11 @@ int store_idat_plte(FILE *output, struct image *img, struct pixel *palette,
 
   png_chunk_idat idat = fill_idat_chunk(compressed_data_buf, compressed_length);
   store_png_chunk(output, (struct png_chunk *)&idat);
+  if (compressed_data_buf)
+  {
+    free(compressed_data_buf);
+  }
+  free(non_compressed_buf);
   return 0;
 
 error:
@@ -1126,21 +1134,28 @@ int store_png_chunk_iend(FILE *output)
 int store_png(const char *filename, struct image *img, struct pixel *palette,
               uint8_t palette_length)
 {
+  if (!img || !img->px)
+    return 1;
+
   int result = 0;
   FILE *output = fopen(filename, "wb");
 
   store_filesig(output);
 
-  if (palette)
+  if (output)
   {
-    store_png_palette(output, img, palette, palette_length);
-  }
-  else
-  {
-    store_png_rgb_alpha(output, img);
+    if (palette)
+    {
+      store_png_palette(output, img, palette, palette_length);
+    }
+    else
+    {
+      store_png_rgb_alpha(output, img);
+    }
+
+    store_png_chunk_iend(output);
+    fclose(output);
   }
 
-  store_png_chunk_iend(output);
-  fclose(output);
   return 0;
 }

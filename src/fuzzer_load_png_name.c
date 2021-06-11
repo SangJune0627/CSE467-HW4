@@ -15,8 +15,18 @@ int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size)
 
     if (Data && Size < 255 && Size > 0)
     {
-        if (load_png((const char *)Data, &test_img) == 0)
+        char *filename = malloc(sizeof(char) * Size + 1);
+        for (size_t i = 0; i < Size; i++)
+        {
+            filename[i] = Data[i];
+        }
+        filename[Size] = '\0';
+
+        if (load_png(filename, &test_img) == 0)
+        {
             free(test_img);
+        }
+        free(filename);
     }
 
     return 0;

@@ -1,8 +1,10 @@
-seeds/
+crash*
 *.pdf
 *.zip
-*.o
-*.a
 *.png
 fuzzer*
-crash*
+bin/
+*.o
+*.a
+seeds/
+*.gdb_history

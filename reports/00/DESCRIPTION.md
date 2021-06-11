@@ -2,22 +2,20 @@
 
 ## Name
 
-Null Pointer Dereference
+Null File Close
 
 ## Description
 
-load_png function in pngparser.c returns 1 when error and 0 when success.
-In the case of success, the program is terminated and the loaded png file is not free, causing a memory leak.
-When an error occurs, a memory bug such as a Null Pointer Dereference is caused by referring to a png that is not loaded completely.
+if program fail to open the file, 'input' become null and go to error section.
 
 ## Affected Lines
 
-In size.c:22
+In pngparser.c: 785
 
 ## Expected vs Observed
 
-Given the code structure of size.c, the load_png function must return 1 when loaded successfully.
-But on the contrary, when png load is successful, it returns 0.
+if program fail to open the file, we expect the program to terminate.
+But error occur in fclose because 'input' is null.
 
 ## Steps to Reproduce
 
@@ -25,7 +23,7 @@ But on the contrary, when png load is successful, it returns 0.
 
 ## Command
 
-./size ../reports/00/id000003,sig06,src000000,opflip1,pos11
+./fuzzer_load_png_name ../reports/00/crash-2d5ff885f157e7321b0f50c06272f3da682963af
 
 ## Proof-of-Concept Input (if needed)
 
@@ -33,5 +31,6 @@ It is difficult to define the specific PNG that causes this bug.
 
 ## Suggested Fix Description
 
+Like below, add the if statement to check whether 'input' is null or not
   if (input)
     fclose(input);

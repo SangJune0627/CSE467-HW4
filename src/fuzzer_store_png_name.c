@@ -34,7 +34,19 @@ int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size)
     struct image img = generate_rand_img();
 
     if (Data && Size < 255 && Size > 0)
-        store_png((const char *)Data, &img, NULL, 0);
+    {
+
+        char *filename = malloc(sizeof(char) * Size + 1);
+        for (size_t i = 0; i < Size; i++)
+        {
+            filename[i] = Data[i];
+        }
+        filename[Size] = '\0';
+
+        store_png(filename, &img, NULL, 0);
+
+        free(filename);
+    }
     free(img.px);
 
     return 0;
