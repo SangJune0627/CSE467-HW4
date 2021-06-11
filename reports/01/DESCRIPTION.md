@@ -33,5 +33,5 @@ It is difficult to define the specific PNG that causes this bug.
 
 ## Suggested Fix Description
 
-  if (input)
-    fclose(input);
+  if (!output)
+    return 1;

@@ -1,0 +1,29 @@
+INFO: Seed: 2802708820
+INFO: Loaded 1 modules   (306 inline 8-bit counters): 306 [0x5af320, 0x5af452), 
+INFO: Loaded 1 PC tables (306 PCs): 306 [0x571550,0x572870),
+INFO:        2 files found in ../seeds
+INFO: -max_len is not provided; libFuzzer will not generate inputs larger than 4096 bytes
+INFO: seed corpus: files: 2 min: 287b max: 1070b total: 1357b rss: 34Mb
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==568==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x7f9cb33faf5b bp 0x000000000000 sp 0x7ffd911765f0 T0)
+==568==The signal is caused by a READ memory access.
+==568==Hint: address points to the zero page.
+    #0 0x7f9cb33faf5b in fclose /build/glibc-eX1tMB/glibc-2.31/libio/iofclose.c:48:9
+    #1 0x4f55c4 in fclose (/mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/fuzzer_load_png_name+0x4f55c4)
+    #2 0x550754 in load_png /mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/pngparser.c:788:3
+    #3 0x54daa5 in LLVMFuzzerTestOneInput /mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/fuzzer_load_png_name.c:19:13
+    #4 0x4586f1 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) (/mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/fuzzer_load_png_name+0x4586f1)
+    #5 0x457e35 in fuzzer::Fuzzer::RunOne(unsigned char const*, unsigned long, bool, fuzzer::InputInfo*, bool*) (/mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/fuzzer_load_png_name+0x457e35)
+    #6 0x45a757 in fuzzer::Fuzzer::ReadAndExecuteSeedCorpora(std::__Fuzzer::vector<fuzzer::SizedFile, fuzzer::fuzzer_allocator<fuzzer::SizedFile> >&) (/mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/fuzzer_load_png_name+0x45a757)
+    #7 0x45aab9 in fuzzer::Fuzzer::Loop(std::__Fuzzer::vector<fuzzer::SizedFile, fuzzer::fuzzer_allocator<fuzzer::SizedFile> >&) (/mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/fuzzer_load_png_name+0x45aab9)
+    #8 0x44978e in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) (/mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/fuzzer_load_png_name+0x44978e)
+    #9 0x4725d2 in main (/mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/fuzzer_load_png_name+0x4725d2)
+    #10 0x7f9cb339d0b2 in __libc_start_main /build/glibc-eX1tMB/glibc-2.31/csu/../csu/libc-start.c:308:16
+    #11 0x41e52d in _start (/mnt/c/Users/owner/OneDrive - UNIST/바탕 화면/SangJune/2021학년도1학기/컴퓨터 보안/hw4/src/fuzzer_load_png_name+0x41e52d)
+
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV /build/glibc-eX1tMB/glibc-2.31/libio/iofclose.c:48:9 in fclose
+==568==ABORTING
+MS: 0 ; base unit: 0000000000000000000000000000000000000000
+artifact_prefix='./'; Test unit written to ./crash-2d5ff885f157e7321b0f50c06272f3da682963af

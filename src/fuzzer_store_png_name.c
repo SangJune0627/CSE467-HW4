@@ -1,21 +1,41 @@
 #include "pngparser.h"
 #include <stdio.h>
+#include <assert.h>
+
+struct image generate_rand_img()
+{
+    struct image img;
+    do
+    {
+        img.size_x = rand() % 256;
+    } while (img.size_x == 0);
+    do
+    {
+        img.size_y = rand() % 256;
+    } while (img.size_y == 0);
+    img.px = malloc(img.size_x * img.size_y * sizeof(struct pixel));
+    if (img.px == NULL)
+        assert(0 && "Rerun test, malloc failed");
+    for (long i = 0; i < img.size_y * img.size_x; i++)
+    {
+        img.px[i].red = rand();
+        img.px[i].green = rand();
+        img.px[i].blue = rand();
+        img.px[i].alpha = rand();
+    }
+
+    return img;
+}
 
 // LibFuzzer stub
 //
 int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size)
 {
-    struct image *test_img;
+    struct image img = generate_rand_img();
 
-    FILE *input = fopen("testfile.png", "w");
-    fwrite(Data, Size, 1, input);
-    fclose(input);
+    if (Data && Size < 255 && Size > 0)
+        store_png((const char *)Data, &img, NULL, 0);
+    free(img.px);
 
-    // What would happen if we run multiple fuzzing processes at the same time?
-    // Take a look at the name of the file.
-    if (load_png("testfile.png", &test_img) == 0)
-        free(test_img);
-
-    // Always return 0
     return 0;
 }

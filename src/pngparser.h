@@ -10,7 +10,8 @@
  *
  * Alpha channel is a separate channel that denotes transparency.
  */
-struct pixel {
+struct pixel
+{
   uint8_t red;
   uint8_t green;
   uint8_t blue;
@@ -42,7 +43,8 @@ struct pixel {
  *
  */
 
-struct image {
+struct image
+{
   uint16_t size_x;
   uint16_t size_y;
   struct pixel *px;

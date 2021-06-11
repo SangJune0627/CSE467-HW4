@@ -785,7 +785,8 @@ success:
 
   return 0;
 error:
-  fclose(input);
+  if (input)
+    fclose(input);
 
   if (deflated_buf)
     free(deflated_buf);
